@@ -8,8 +8,8 @@ namespace WebApplication1.Models
 {
     internal interface IUserRepository
     {
-        List<User> GetAllUser();
-        User AddUser(User user);
+        List<Users> GetAllUser();
+        Users AddUser(Users user);
         void DeleteUser(int id);
 
     }
