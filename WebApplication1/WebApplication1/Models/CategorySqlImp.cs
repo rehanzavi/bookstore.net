@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Http.Results;
 
 namespace WebApplication1.Models
 {
@@ -30,7 +31,10 @@ namespace WebApplication1.Models
                 string catName = reader["Name"].ToString();
                 string catDesc = reader["Description"].ToString();
                 string img = reader["Image"].ToString();
-                list.Add(new Category(id, catName, catDesc, img));
+                int position = Convert.ToInt32(reader["Position"]);
+                int status = Convert.ToInt32(reader["Status"]);
+                string createdat = reader["CreatedAt"].ToString();
+                list.Add(new Category(id, catName, catDesc, img, status, position, createdat));
             }
             conn.Close();
             return list;
@@ -49,14 +53,17 @@ namespace WebApplication1.Models
                 string catName = reader["Name"].ToString();
                 string catDesc = reader["Description"].ToString();
                 string img = reader["Image"].ToString();
-                cat = new Category(id, catName, catDesc, img);
+                int position = Convert.ToInt32(reader["Position"]);
+                int status = Convert.ToInt32(reader["Status"]);
+                string createdat = reader["CreatedAt"].ToString();
+                cat = new Category(id, catName, catDesc, img, status, position, createdat);
             }
             conn.Close();
             return cat;
         }
         public Category AddCategory(Category category)
         {
-            comm.CommandText = $"insert into Category values ('{category.Name}','{category.Description}','{category.Image}')";
+            comm.CommandText = $"insert into Category(Name, Description, Image, Status, Position) values ('{category.Name}','{category.Description}','{category.Image}',{category.Status}, {category.Position})";
 
             comm.Connection = conn;
             conn.Open();
@@ -85,7 +92,7 @@ namespace WebApplication1.Models
 
         public void UpdateCategory(Category category)
         {
-            comm.CommandText = $"update category set CategoryName = '{category.Name}',Description='{category.Description}',Image = '{category.Image}' where CategoryId = {category.CatId}";
+            comm.CommandText = $"update category set Name = '{category.Name}',Description='{category.Description}',Image = '{category.Image}',Status={category.Status},Position={category.Position} where CategoryId = {category.CatId}";
             comm.Connection = conn;
             conn.Open();
             int row = comm.ExecuteNonQuery();

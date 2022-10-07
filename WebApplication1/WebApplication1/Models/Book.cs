@@ -15,17 +15,18 @@ namespace WebApplication1.Models
         public int ISBN { get; set; }
         public int Year { get; set; }
         public float Price { get; set; }
-        public int Quantity { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
-        
+        public int Status { get; set; }
+        public  int Position { get; set; }
+
 
         public Book()
         {
 
         }
 
-        public Book(int bookId, int catId, string title, int isbn, int year, float price,int quantity, string description, string image)
+        public Book(int bookId, int catId, string title, int isbn, int year, float price,int status,int position, string description, string image)
         {
             BookId = bookId;
             CatId = catId;
@@ -33,7 +34,8 @@ namespace WebApplication1.Models
             ISBN = isbn;
             Year = year;
             Price = price;
-            Quantity = quantity;
+            Position = position;
+            Status = status;
             Description = description;
             Image = image;
         }

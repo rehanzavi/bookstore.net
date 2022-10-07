@@ -19,7 +19,7 @@ namespace WebApplication1.Models
         }
         Book IBookRepository.AddBook(Book book)
         {
-            comm.CommandText = $"Insert into Books values ('{book.Title}',{book.ISBN},{book.Year},{book.Price},{book.Quantity},'{book.Description}','{book.Image}')";
+            comm.CommandText = $"Insert into Books values ('{book.Title}',{book.ISBN},{book.Year},{book.Price},{book.Status},{book.Position},'{book.Description}','{book.Image}')";
             comm.Connection = conn;
             conn.Open();
             int row = comm.ExecuteNonQuery();
@@ -58,12 +58,13 @@ namespace WebApplication1.Models
                 int isbn = Convert.ToInt32(reader["ISBN"]);
                 int year = Convert.ToInt32(reader["Year"]);
                 int price = Convert.ToInt32(reader["Price"]);
-                int quantity = Convert.ToInt32(reader["Quantity"]);
+                int position = Convert.ToInt32(reader["Position"]);
+                int status = Convert.ToInt32(reader["Status"]);
                 string description = reader["Description"].ToString();
                 string image = reader["Image"].ToString();
 
 
-                list.Add(new Book(bookId, catId, title, isbn, year, price, quantity, description, image));
+                list.Add(new Book(bookId, catId, title, isbn, year, price, status, position, description, image));
             }
             conn.Close();
             return list;
@@ -85,10 +86,11 @@ namespace WebApplication1.Models
                 int isbn = Convert.ToInt32(reader["ISBN"]);
                 int year = Convert.ToInt32(reader["Year"]);
                 int price = Convert.ToInt32(reader["Price"]);
-                int quantity = Convert.ToInt32(reader["Quantity"]);
+                int position = Convert.ToInt32(reader["Position"]);
+                int status = Convert.ToInt32(reader["Status"]);
                 string description = reader["Description"].ToString();
                 string image = reader["Image"].ToString();
-                book = new Book(bookId, catId, title, isbn, year, price, quantity, description,image);
+                book = new Book(bookId, catId, title, isbn, year, price, status, position, description,image);
 
             }
             conn.Close();
@@ -105,7 +107,7 @@ namespace WebApplication1.Models
 
         void IBookRepository.UpdateBook(Book book)
         {
-            comm.CommandText = $"Update Books set CatId={book.CatId},Title ='{book.Title}',ISBN = {book.ISBN},Year = {book.Year},Price= {book.Price},Description='{book.Description}', Image='{book.Image}' where BookId = {book.BookId}";
+            comm.CommandText = $"Update Books set CatId={book.CatId},Title ='{book.Title}',ISBN = {book.ISBN},Year = {book.Year},Price= {book.Price}, Status= {book.Status}, Position= {book.Position}, Description='{book.Description}', Image='{book.Image}' where BookId = {book.BookId}";
             comm.Connection = conn;
             conn.Open();
             int row = comm.ExecuteNonQuery();
